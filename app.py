@@ -56,26 +56,56 @@ def save_progress():
 
 @app.route('/unlock_achievement', methods=['POST'])
 def unlock_achievement():
-    if not current_user.is_authenticated:
-        return jsonify({'error': 'Not authenticated'}), 401
-    
     data = request.get_json()
-    achievement = Achievement(
-        user_id=current_user.id,
-        name=data.get('name'),
-        description=data.get('description'),
-        unlocked_at=datetime.utcnow()
-    )
+    achievement = Achievement.query.filter_by(name=data.get('name')).first()
     
-    db.session.add(achievement)
+    if not achievement:
+        achievement = Achievement(
+            name=data.get('name'),
+            description=data.get('description'),
+            progress=data.get('progress', 0),
+            current_value=data.get('current_value', 0),
+            target_value=data.get('target_value', 0),
+            unlocked_at=datetime.utcnow() if data.get('progress', 0) >= 100 else None
+        )
+        db.session.add(achievement)
+    else:
+        achievement.progress = data.get('progress', achievement.progress)
+        achievement.current_value = data.get('current_value', achievement.current_value)
+        if achievement.progress >= 100 and not achievement.unlocked_at:
+            achievement.unlocked_at = datetime.utcnow()
+    
     db.session.commit()
     return jsonify({'success': True})
 
 @app.route('/achievements')
 def achievements():
-    if not current_user.is_authenticated:
-        return render_template('achievements.html', achievements=[])
-    achievements = Achievement.query.filter_by(user_id=current_user.id).all()
+    # Create default achievements if they don't exist
+    default_achievements = [
+        {'name': 'Line Clearer', 'description': 'Clear your first line', 'target_value': 1},
+        {'name': 'Speed Demon', 'description': 'Reach level 5', 'target_value': 5},
+        {'name': 'Tetris Master', 'description': 'Score 10,000 points', 'target_value': 10000},
+        {'name': 'Time Master', 'description': 'Stay alive for 5 minutes', 'target_value': 300},
+        {'name': 'Block Wizard', 'description': 'Place 1000 blocks', 'target_value': 1000},
+        {'name': 'Speed Runner', 'description': 'Clear 10 lines in under a minute', 'target_value': 10},
+        {'name': 'Perfect Clear', 'description': 'Clear the entire board', 'target_value': 200},
+        {'name': 'Line Warrior', 'description': 'Clear 50 lines total', 'target_value': 50},
+        {'name': 'Combo King', 'description': 'Clear 4 lines at once', 'target_value': 4}
+    ]
+    
+    achievements = Achievement.query.all()
+    if not achievements:
+        for ach in default_achievements:
+            achievement = Achievement(
+                name=ach['name'],
+                description=ach['description'],
+                target_value=ach['target_value'],
+                progress=0
+            )
+            db.session.add(achievement)
+        db.session.commit()
+        achievements = Achievement.query.all()
+    
     return render_template('achievements.html', achievements=achievements)
 
 with app.app_context():

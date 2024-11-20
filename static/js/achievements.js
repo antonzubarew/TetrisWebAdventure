@@ -34,24 +34,6 @@ class AchievementSystem {
                 target: 10000,
                 unlocked: false
             },
-            'line_warrior': {
-                name: 'Line Warrior',
-                description: 'Clear 50 lines total',
-                condition: () => this.game.lines >= 50,
-                progress: () => Math.min(100, (this.game.lines / 50) * 100),
-                current: () => this.game.lines,
-                target: 50,
-                unlocked: false
-            },
-            'combo_king': {
-                name: 'Combo King',
-                description: 'Clear 4 lines at once',
-                condition: () => false,
-                progress: () => this.game.lines >= 4 ? 100 : 0,
-                current: () => this.game.lines >= 4 ? 4 : 0,
-                target: 4,
-                unlocked: false
-            },
             'time_master': {
                 name: 'Time Master',
                 description: 'Stay alive for 5 minutes',
@@ -84,8 +66,26 @@ class AchievementSystem {
                 description: 'Clear the entire board',
                 condition: () => this.checkPerfectClear(),
                 progress: () => this.calculateBoardClearPercentage(),
-                current: () => Math.floor(this.calculateBoardClearPercentage() * this.game.rows),
+                current: () => Math.floor(this.calculateBoardClearPercentage() * this.game.rows / 100),
                 target: this.game.rows,
+                unlocked: false
+            },
+            'line_warrior': {
+                name: 'Line Warrior',
+                description: 'Clear 50 lines total',
+                condition: () => this.game.lines >= 50,
+                progress: () => Math.min(100, (this.game.lines / 50) * 100),
+                current: () => this.game.lines,
+                target: 50,
+                unlocked: false
+            },
+            'combo_king': {
+                name: 'Combo King',
+                description: 'Clear 4 lines at once',
+                condition: () => false,
+                progress: () => this.game.lines >= 4 ? 100 : 0,
+                current: () => this.game.lines >= 4 ? 4 : 0,
+                target: 4,
                 unlocked: false
             }
         };
@@ -150,6 +150,7 @@ class AchievementSystem {
 
         if (progress > 0 && progress < 100) {
             this.showProgressNotification(achievement, progress, current, target);
+            this.saveAchievement(achievement);
         }
     }
 
@@ -182,6 +183,19 @@ class AchievementSystem {
     }
 
     showProgressNotification(achievement, progress, current, target) {
+        // Update the achievements page in real-time
+        const achievementCard = document.querySelector(`[data-achievement="${achievement.name}"]`);
+        if (achievementCard) {
+            const progressBar = achievementCard.querySelector('.progress-bar');
+            const progressText = achievementCard.querySelector('.achievement-progress-text');
+            if (progressBar && progressText) {
+                progressBar.style.width = `${progress}%`;
+                progressBar.textContent = `${progress}%`;
+                progressText.textContent = `Progress: ${current}/${target}`;
+            }
+        }
+
+        // Show notification
         this.notificationElement.innerHTML = `
             <div class="achievement-content achievement-progress">
                 <h4>Achievement Progress</h4>

@@ -13,7 +13,7 @@ class User(UserMixin, db.Model):
 
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)  # Made nullable
     name = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(256))
     unlocked_at = db.Column(db.DateTime, default=datetime.utcnow)
