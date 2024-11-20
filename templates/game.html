@@ -26,10 +26,12 @@
             </div>
             <button id="startButton" class="btn btn-primary mt-3">Start Game</button>
             <button id="pauseButton" class="btn btn-secondary mt-3">Pause</button>
+            <a href="/achievements" class="btn btn-info mt-3">View Achievements</a>
         </div>
     </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/audio.js') }}"></script>
+<script src="{{ url_for('static', filename='js/achievements.js') }}"></script>
 <script src="{{ url_for('static', filename='js/tetris.js') }}"></script>
 {% endblock %}

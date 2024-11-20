@@ -25,6 +25,7 @@ class Tetris {
         this.nextPiece = null;
         
         this.audio = new TetrisAudio();
+        this.achievements = new AchievementSystem(this);
         
         this.pieces = [
             [[1,1,1,1]], // I
@@ -243,6 +244,15 @@ class Tetris {
             this.score += linesCleared * 100 * this.level;
             this.level = Math.floor(this.lines / 10) + 1;
             this.updateScore();
+            
+            // Check for Tetris (4 lines cleared at once)
+            if (linesCleared === 4) {
+                this.achievements.triggerComboAchievement();
+            }
+            
+            // Check achievements after updating score and lines
+            this.achievements.checkAchievements();
+            
             try {
                 await this.audio.playClear();
             } catch (error) {
@@ -387,6 +397,9 @@ class Tetris {
                 lines_cleared: this.lines
             })
         });
+        
+        // Check achievements when progress is saved
+        this.achievements.checkAchievements();
     }
 
     gameLoop() {

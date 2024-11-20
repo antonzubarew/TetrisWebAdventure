@@ -34,3 +34,34 @@
 .achievements-container {
     padding: 20px;
 }
+
+.achievement-notification {
+    position: fixed;
+    top: 20px;
+    right: -300px;
+    width: 300px;
+    background-color: var(--bs-dark);
+    border-left: 4px solid var(--bs-primary);
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.achievement-notification.show {
+    right: 20px;
+}
+
+.achievement-content {
+    color: var(--bs-light);
+}
+
+.achievement-content h4 {
+    margin: 0;
+    color: var(--bs-primary);
+}
+
+.achievement-content p {
+    margin: 5px 0;
+}

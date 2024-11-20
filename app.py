@@ -3,6 +3,7 @@ from flask import Flask, render_template, jsonify, request, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_login import LoginManager, current_user
+from datetime import datetime
 
 class Base(DeclarativeBase):
     pass
@@ -50,6 +51,23 @@ def save_progress():
     if current_user.high_score < progress.score:
         current_user.high_score = progress.score
     
+    db.session.commit()
+    return jsonify({'success': True})
+
+@app.route('/unlock_achievement', methods=['POST'])
+def unlock_achievement():
+    if not current_user.is_authenticated:
+        return jsonify({'error': 'Not authenticated'}), 401
+    
+    data = request.get_json()
+    achievement = Achievement(
+        user_id=current_user.id,
+        name=data.get('name'),
+        description=data.get('description'),
+        unlocked_at=datetime.utcnow()
+    )
+    
+    db.session.add(achievement)
     db.session.commit()
     return jsonify({'success': True})
 
