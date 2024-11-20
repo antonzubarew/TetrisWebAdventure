@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="game-container">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="game-info">
+            <h3>Score: <span id="score">0</span></h3>
+            <h3>Level: <span id="level">1</span></h3>
+            <h3>Lines: <span id="lines">0</span></h3>
+            <div class="next-piece-container">
+                <h4>Next Piece:</h4>
+                <canvas id="nextPieceCanvas"></canvas>
+            </div>
+            <div class="controls mt-4">
+                <h4>Controls:</h4>
+                <p>← → : Move left/right</p>
+                <p>↑ : Rotate</p>
+                <p>↓ : Soft drop</p>
+                <p>Space : Hard drop</p>
+                <p>P : Pause</p>
+            </div>
+            <button id="startButton" class="btn btn-primary mt-3">Start Game</button>
+            <button id="pauseButton" class="btn btn-secondary mt-3">Pause</button>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/audio.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tetris.js') }}"></script>
+{% endblock %}

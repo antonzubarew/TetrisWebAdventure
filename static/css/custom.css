@@ -1,0 +1,36 @@
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+#gameCanvas {
+    border: 2px solid var(--bs-primary);
+    background-color: var(--bs-dark);
+}
+
+.game-info {
+    padding: 20px;
+    background-color: var(--bs-dark);
+    border-radius: 8px;
+}
+
+.next-piece-container {
+    margin: 20px 0;
+}
+
+#nextPieceCanvas {
+    border: 1px solid var(--bs-secondary);
+    background-color: var(--bs-dark);
+}
+
+.controls {
+    background-color: var(--bs-dark);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.achievements-container {
+    padding: 20px;
+}
