@@ -247,9 +247,13 @@ class Tetris {
         }
     }
 
-    hardDrop() {
+    async hardDrop() {
         while (this.moveCurrentPiece(0, 1)) {}
-        this.audio.playDrop();
+        try {
+            await this.audio.playDrop();
+        } catch (error) {
+            console.warn('Hard drop sound failed:', error);
+        }
     }
 
     togglePause() {

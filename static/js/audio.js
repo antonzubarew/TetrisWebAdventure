@@ -37,8 +37,17 @@ class TetrisAudio {
         this.playSoundSafely(() => this.synth.triggerAttackRelease("E4", "32n"));
     }
 
-    playDrop() {
-        this.playSoundSafely(() => this.synth.triggerAttackRelease("G3", "16n"));
+    async playDrop() {
+        if (!this.initialized || !this.synth) {
+            await this.init(); // Try to reinitialize if needed
+        }
+        try {
+            await this.synth.triggerAttackRelease("G3", "16n");
+        } catch (error) {
+            console.warn('Drop sound failed, attempting recovery:', error);
+            this.initialized = false;
+            await this.init(); // Try to recover
+        }
     }
 
     playClear() {
