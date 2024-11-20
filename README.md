@@ -1,115 +1,142 @@
-# Web-based Tetris Game
+# Веб-игра Тетрис
 
-A modern implementation of the classic Tetris game built with Flask and JavaScript, featuring comprehensive achievement tracking, ghost piece trajectory, and various gameplay enhancements.
+Современная реализация классической игры Тетрис, созданная с использованием Flask и JavaScript, с комплексной системой достижений, отображением траектории падения фигур и различными игровыми улучшениями.
 
-## Features
+## Уникальные особенности
 
-- **Core Tetris Gameplay**
-  - Classic block-dropping mechanics
-  - Ghost piece trajectory visualization
-  - Dynamic speed adjustment system
-  - Pastel color scheme for better visibility
-  - Next piece preview
+- **Система призрачных фигур**
+  - Визуализация траектории падения текущей фигуры
+  - Помогает точно размещать блоки
+  - Улучшает стратегическое планирование
 
-- **Achievement System**
-  - Multiple achievement types
-  - Real-time progress monitoring
-  - Achievement notifications
-  - Progress persistence
-  - Unlockable achievements include:
-    - Line Clearer: Clear your first line
-    - Speed Demon: Reach level 5
-    - Tetris Master: Score 10,000 points
-    - Time Master: Stay alive for 5 minutes
-    - Block Wizard: Place 1000 blocks
-    - Speed Runner: Clear 10 lines under a minute
-    - Perfect Clear: Clear the entire board
-    - Line Warrior: Clear 50 lines total
-    - Combo King: Clear 4 lines at once
+- **Система достижений**
+  - Отслеживание прогресса в реальном времени
+  - Всплывающие уведомления о достижениях
+  - Сохранение прогресса между сессиями
+  - Разнообразные типы достижений
 
-- **Progress Saving**
-  - Automatic score tracking
-  - High score persistence
-  - Achievement progress saving
+- **Пастельная цветовая схема**
+  - Улучшенная видимость блоков
+  - Приятный для глаз дизайн
+  - Современный внешний вид
 
-- **Audio Feedback System**
-  - Sound effects for:
-    - Moving pieces
-    - Rotating pieces
-    - Dropping pieces
-    - Line clears
-    - Achievement unlocks
-    - Game over
+- **Система звуковых эффектов**
+  - Звуки движения и вращения
+  - Эффекты при очистке линий
+  - Уведомления о достижениях
+  - Музыкальная обратная связь
 
-## Technologies Used
+- **Сохранение прогресса**
+  - Автоматическое сохранение счета
+  - Отслеживание рекордов
+  - Сохранение достижений
+  - История игровых сессий
 
-- **Backend**
-  - Flask (Python web framework)
-  - SQLAlchemy (Database ORM)
-  - PostgreSQL (Database)
+## Структура проекта
 
-- **Frontend**
+```
+/
+├── static/                  # Фронтенд ресурсы
+│   ├── assets/             # Изображения и медиа файлы
+│   ├── css/                # CSS стили
+│   └── js/                 # JavaScript файлы
+│       ├── achievements.js  # Система достижений
+│       ├── audio.js        # Аудио система
+│       └── tetris.js       # Основная игровая логика
+├── templates/              # HTML шаблоны
+│   ├── base.html          # Базовый шаблон
+│   ├── game.html          # Игровой интерфейс
+│   └── achievements.html   # Страница достижений
+├── app.py                 # Основной Flask-сервер
+├── models.py              # Модели базы данных
+└── main.py               # Точка входа приложения
+```
+
+## Требования
+
+- Python 3.11+
+- PostgreSQL
+- Современный веб-браузер с поддержкой HTML5
+- Подключение к интернету
+
+## Инструкция по запуску
+
+1. **Настройка окружения**
+   - Форкните проект на Replit
+   - Дождитесь автоматической установки зависимостей
+
+2. **Конфигурация базы данных**
+   - База данных PostgreSQL настраивается автоматически
+   - Таблицы создаются при первом запуске
+
+3. **Запуск приложения**
+   - Нажмите кнопку "Run" в Replit
+   - Сервер запустится на порту 5000
+
+## Основные функции
+
+- **Классический геймплей**
+  - Механика падающих блоков
+  - Отображение следующей фигуры
+  - Динамическое увеличение скорости
+  - Система очков
+
+- **Система достижений**
+  - Множество типов достижений:
+    - Line Clearer: Очистка первой линии
+    - Speed Demon: Достижение 5 уровня
+    - Tetris Master: Набор 10,000 очков
+    - Time Master: Игра в течение 5 минут
+    - Block Wizard: Размещение 1000 блоков
+    - Speed Runner: Очистка 10 линий за минуту
+    - Perfect Clear: Полная очистка поля
+    - Line Warrior: Очистка 50 линий всего
+    - Combo King: Очистка 4 линий одновременно
+
+## Управление
+
+- **←/→**: Движение влево/вправо
+- **↑**: Вращение фигуры
+- **↓**: Ускоренное падение
+- **Пробел**: Мгновенное падение
+- **P**: Пауза
+
+## Технологии
+
+- **Бэкенд**
+  - Flask (Python веб-фреймворк)
+  - SQLAlchemy (ORM для базы данных)
+  - PostgreSQL (База данных)
+
+- **Фронтенд**
   - HTML5 Canvas
   - JavaScript (ES6+)
-  - Bootstrap 5 (Styling)
-  - Tone.js (Audio)
+  - Bootstrap 5 (Стилизация)
+  - Tone.js (Аудио)
 
-## Installation
+## Разработка
 
-1. Clone the repository on Replit
-2. The project will automatically install required dependencies
-3. Click the "Run" button to start the server
+1. Форкните репозиторий на Replit
+2. Окружение настроится автоматически:
+   - Зависимости Python
+   - База данных PostgreSQL
+   - Системные пакеты
+3. Сервер разработки работает на порту 5000
 
-## Usage
+## Вклад в проект
 
-1. Navigate to the game URL
-2. Click "Start Game" to begin playing
-3. Use the controls to move and rotate pieces
-4. Track your progress in the Achievements page
+1. Форкните репозиторий
+2. Создайте ветку для функционала
+3. Зафиксируйте изменения
+4. Отправьте в ветку
+5. Создайте Pull Request
 
-## Controls
+## Лицензия
 
-- **←/→**: Move piece left/right
-- **↑**: Rotate piece
-- **↓**: Soft drop
-- **Space**: Hard drop
-- **P**: Pause game
+Проект распространяется под лицензией MIT - подробности в файле LICENSE.
 
-## Achievement System
+## Благодарности
 
-The game features a comprehensive achievement system that tracks various milestones:
-
-- Real-time progress tracking
-- Visual progress bars
-- Pop-up notifications
-- Persistent achievement storage
-- Multiple achievement categories
-
-View your achievements by clicking the "Achievements" link in the navigation bar.
-
-## Development Setup
-
-1. Fork the project on Replit
-2. The environment will automatically configure:
-   - Python dependencies
-   - PostgreSQL database
-   - Required system packages
-3. Development server runs on port 5000
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Original Tetris® game by Alexey Pajitnov
-- Tone.js for audio synthesis
-- Bootstrap for UI components
+- Оригинальная игра Tetris® от Алексея Пажитнова
+- Tone.js за синтез звука
+- Bootstrap за компоненты интерфейса
