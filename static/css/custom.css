@@ -45,12 +45,28 @@
     padding: 15px;
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: right 0.3s ease-in-out;
+    transition: right 0.3s ease-in-out, transform 0.3s ease-in-out;
     z-index: 1000;
 }
 
 .achievement-notification.show {
     right: 20px;
+    animation: achievement-popup 0.5s ease-out;
+}
+
+@keyframes achievement-popup {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(-10%);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .achievement-content {
@@ -60,8 +76,73 @@
 .achievement-content h4 {
     margin: 0;
     color: var(--bs-primary);
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px var(--bs-primary);
+    }
+    to {
+        text-shadow: 0 0 10px var(--bs-primary),
+                     0 0 20px var(--bs-info);
+    }
 }
 
 .achievement-content p {
     margin: 5px 0;
+}
+
+.achievement-card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px);
+}
+
+.achievement-card.achieved {
+    border-color: var(--bs-success);
+}
+
+.achievement-card .progress {
+    height: 10px;
+    background-color: var(--bs-dark);
+}
+
+.achievement-card .progress-bar {
+    background-color: var(--bs-primary);
+    transition: width 0.5s ease-in-out;
+}
+
+.achievement-progress-text {
+    font-size: 0.9em;
+    color: var(--bs-info);
+}
+
+.achievement-time {
+    font-size: 0.8em;
+    color: var(--bs-secondary);
+}
+
+.achievement-unlock .progress-bar {
+    background-image: linear-gradient(45deg, 
+        var(--bs-primary) 25%, 
+        var(--bs-info) 25%, 
+        var(--bs-info) 50%, 
+        var(--bs-primary) 50%, 
+        var(--bs-primary) 75%, 
+        var(--bs-info) 75%, 
+        var(--bs-info));
+    background-size: 40px 40px;
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+    from {
+        background-position: 40px 0;
+    }
+    to {
+        background-position: 0 0;
+    }
 }

@@ -6,11 +6,27 @@
     <div class="row">
         {% for achievement in achievements %}
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card achievement-card {% if achievement.progress == 100 %}achieved{% endif %}">
                 <div class="card-body">
                     <h5 class="card-title">{{ achievement.name }}</h5>
                     <p class="card-text">{{ achievement.description }}</p>
-                    <small class="text-muted">Unlocked: {{ achievement.unlocked_at.strftime('%Y-%m-%d') }}</small>
+                    <div class="progress mb-2">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ achievement.progress }}%"
+                             aria-valuenow="{{ achievement.progress }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                            {{ achievement.progress }}%
+                        </div>
+                    </div>
+                    <p class="achievement-progress-text">
+                        Progress: {{ achievement.current_value }}/{{ achievement.target_value }}
+                    </p>
+                    {% if achievement.unlocked_at %}
+                    <small class="text-muted">
+                        Unlocked: {{ achievement.unlocked_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                    </small>
+                    {% endif %}
                 </div>
             </div>
         </div>

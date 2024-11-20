@@ -79,4 +79,20 @@ class TetrisAudio {
             this.initialized = false;
         }
     }
+
+    playAchievementUnlock() {
+        if (!this.initialized || !this.synth) {
+            console.warn('Audio not initialized, skipping achievement sound');
+            return;
+        }
+        try {
+            const now = Tone.now();
+            this.synth.triggerAttackRelease("E5", "16n", now);
+            this.synth.triggerAttackRelease("G5", "16n", now + 0.1);
+            this.synth.triggerAttackRelease("C6", "8n", now + 0.2);
+        } catch (error) {
+            console.warn('Error playing achievement sound:', error);
+            this.initialized = false;
+        }
+    }
 }
