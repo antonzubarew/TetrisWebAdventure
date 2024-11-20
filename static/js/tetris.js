@@ -227,7 +227,7 @@ class Tetris {
         this.audio.playDrop();
     }
 
-    clearLines() {
+    async clearLines() {
         let linesCleared = 0;
         for (let y = this.rows - 1; y >= 0; y--) {
             if (this.board[y].every(cell => cell !== 0)) {
@@ -243,7 +243,11 @@ class Tetris {
             this.score += linesCleared * 100 * this.level;
             this.level = Math.floor(this.lines / 10) + 1;
             this.updateScore();
-            this.audio.playClear();
+            try {
+                await this.audio.playClear();
+            } catch (error) {
+                console.warn('Line clear sound failed:', error);
+            }
         }
     }
 

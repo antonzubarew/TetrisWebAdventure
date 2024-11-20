@@ -50,8 +50,17 @@ class TetrisAudio {
         }
     }
 
-    playClear() {
-        this.playSoundSafely(() => this.synth.triggerAttackRelease("C5", "8n"));
+    async playClear() {
+        if (!this.initialized || !this.synth) {
+            await this.init(); // Try to reinitialize if needed
+        }
+        try {
+            await this.synth.triggerAttackRelease("C5", "8n");
+        } catch (error) {
+            console.warn('Clear sound failed, attempting recovery:', error);
+            this.initialized = false;
+            await this.init(); // Try to recover
+        }
     }
 
     playGameOver() {
