@@ -38,8 +38,13 @@ class Tetris {
         ];
         
         this.colors = [
-            '#FF0D72', '#0DC2FF', '#0DFF72',
-            '#F538FF', '#FF8E0D', '#FFE138', '#3877FF'
+            '#FFB5C5', // pastel pink instead of bright red
+            '#B5E3FF', // pastel blue instead of bright cyan
+            '#B5FFD9', // pastel green instead of bright green
+            '#E8B5FF', // pastel purple instead of bright magenta
+            '#FFD9B5', // pastel orange instead of bright orange
+            '#FFF4B5', // pastel yellow instead of bright yellow
+            '#B5C9FF'  // pastel blue instead of bright blue
         ];
         
         this.bindControls();
