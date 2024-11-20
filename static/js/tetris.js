@@ -95,8 +95,7 @@ class Tetris {
             }
         });
 
-        document.getElementById('startButton').addEventListener('click', async () => {
-            await this.audio.init();
+        document.getElementById('startButton').addEventListener('click', () => {
             this.initGame();
         });
 
@@ -105,7 +104,25 @@ class Tetris {
         });
     }
 
-    initGame() {
+    async initGame() {
+        // Initialize audio with retry logic
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        while (retryCount < maxRetries) {
+            try {
+                await this.audio.init();
+                break;
+            } catch (error) {
+                console.warn(`Audio initialization attempt ${retryCount + 1} failed:`, error);
+                retryCount++;
+                if (retryCount === maxRetries) {
+                    console.warn('Audio initialization failed after maximum retries');
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait before retry
+            }
+        }
+
         this.board = Array(this.rows).fill().map(() => Array(this.cols).fill(0));
         this.score = 0;
         this.level = 1;
@@ -262,12 +279,10 @@ class Tetris {
             for (let y = 0; y < this.currentPiece.shape.length; y++) {
                 for (let x = 0; x < this.currentPiece.shape[y].length; x++) {
                     if (this.currentPiece.shape[y][x]) {
-                        this.ctx.fillStyle = this.currentPiece.color + '40';
-                        this.ctx.fillRect(
-                            (this.currentPiece.x + x) * this.blockSize,
-                            (ghostY + y) * this.blockSize,
-                            this.blockSize - 1,
-                            this.blockSize - 1
+                        this.drawGhostBlock(
+                            this.currentPiece.x + x,
+                            ghostY + y,
+                            this.currentPiece.color + '40'
                         );
                     }
                 }
@@ -292,12 +307,30 @@ class Tetris {
 
     drawBlock(x, y, color) {
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(
+        const radius = 5;
+        this.ctx.beginPath();
+        this.ctx.roundRect(
             x * this.blockSize,
             y * this.blockSize,
             this.blockSize - 1,
-            this.blockSize - 1
+            this.blockSize - 1,
+            radius
         );
+        this.ctx.fill();
+    }
+
+    drawGhostBlock(x, y, color) {
+        this.ctx.fillStyle = color;
+        const radius = 5;
+        this.ctx.beginPath();
+        this.ctx.roundRect(
+            x * this.blockSize,
+            y * this.blockSize,
+            this.blockSize - 1,
+            this.blockSize - 1,
+            radius
+        );
+        this.ctx.fill();
     }
 
     drawNextPiece() {
@@ -312,12 +345,16 @@ class Tetris {
                 for (let x = 0; x < this.nextPiece.shape[y].length; x++) {
                     if (this.nextPiece.shape[y][x]) {
                         this.nextCtx.fillStyle = this.nextPiece.color;
-                        this.nextCtx.fillRect(
+                        const radius = 5;
+                        this.nextCtx.beginPath();
+                        this.nextCtx.roundRect(
                             (offsetX + x) * this.blockSize,
                             (offsetY + y) * this.blockSize,
                             this.blockSize - 1,
-                            this.blockSize - 1
+                            this.blockSize - 1,
+                            radius
                         );
+                        this.nextCtx.fill();
                     }
                 }
             }
