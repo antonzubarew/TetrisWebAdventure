@@ -6,10 +6,10 @@ class TetrisAudio {
 
     async init() {
         try {
-            this.synth = new Tone.Synth().toDestination();
             await Tone.start();
+            this.synth = new Tone.Synth().toDestination();
             this.initialized = true;
-            console.log('Audio initialized successfully');
+            console.log('Audio initialization successfully');
         } catch (error) {
             console.warn('Audio initialization failed:', error);
             this.initialized = false;

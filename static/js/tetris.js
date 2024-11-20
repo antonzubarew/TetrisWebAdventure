@@ -25,7 +25,6 @@ class Tetris {
         this.nextPiece = null;
         
         this.audio = new TetrisAudio();
-        this.audio.init();
         
         this.pieces = [
             [[1,1,1,1]], // I
@@ -48,7 +47,6 @@ class Tetris {
         ];
         
         this.bindControls();
-        this.initGame();
     }
 
     getGhostPosition() {
@@ -97,7 +95,8 @@ class Tetris {
             }
         });
 
-        document.getElementById('startButton').addEventListener('click', () => {
+        document.getElementById('startButton').addEventListener('click', async () => {
+            await this.audio.init();
             this.initGame();
         });
 
