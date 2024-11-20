@@ -13,13 +13,13 @@ class User(UserMixin, db.Model):
 
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)  # Made nullable
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=True)
     name = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(256))
     unlocked_at = db.Column(db.DateTime, default=datetime.utcnow)
-    progress = db.Column(db.Float, default=0)  # Store progress as percentage
-    current_value = db.Column(db.Integer, default=0)  # Current progress value
-    target_value = db.Column(db.Integer, default=0)   # Target value to achieve
+    progress = db.Column(db.Float, default=0)
+    current_value = db.Column(db.Integer, default=0)
+    target_value = db.Column(db.Integer, default=0)
 
 class GameProgress(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -80,33 +80,45 @@ def unlock_achievement():
 
 @app.route('/achievements')
 def achievements():
-    # Create default achievements if they don't exist
-    default_achievements = [
-        {'name': 'Line Clearer', 'description': 'Clear your first line', 'target_value': 1},
-        {'name': 'Speed Demon', 'description': 'Reach level 5', 'target_value': 5},
-        {'name': 'Tetris Master', 'description': 'Score 10,000 points', 'target_value': 10000},
-        {'name': 'Time Master', 'description': 'Stay alive for 5 minutes', 'target_value': 300},
-        {'name': 'Block Wizard', 'description': 'Place 1000 blocks', 'target_value': 1000},
-        {'name': 'Speed Runner', 'description': 'Clear 10 lines in under a minute', 'target_value': 10},
-        {'name': 'Perfect Clear', 'description': 'Clear the entire board', 'target_value': 200},
-        {'name': 'Line Warrior', 'description': 'Clear 50 lines total', 'target_value': 50},
-        {'name': 'Combo King', 'description': 'Clear 4 lines at once', 'target_value': 4}
-    ]
-    
-    achievements = Achievement.query.all()
-    if not achievements:
-        for ach in default_achievements:
-            achievement = Achievement(
-                name=ach['name'],
-                description=ach['description'],
-                target_value=ach['target_value'],
-                progress=0
-            )
-            db.session.add(achievement)
-        db.session.commit()
+    try:
         achievements = Achievement.query.all()
-    
-    return render_template('achievements.html', achievements=achievements)
+        if not achievements:
+            default_achievements = [
+                {'name': 'Line Clearer', 'description': 'Clear your first line', 'target_value': 1},
+                {'name': 'Speed Demon', 'description': 'Reach level 5', 'target_value': 5},
+                {'name': 'Tetris Master', 'description': 'Score 10,000 points', 'target_value': 10000},
+                {'name': 'Time Master', 'description': 'Stay alive for 5 minutes', 'target_value': 300},
+                {'name': 'Block Wizard', 'description': 'Place 1000 blocks', 'target_value': 1000},
+                {'name': 'Speed Runner', 'description': 'Clear 10 lines in under a minute', 'target_value': 10},
+                {'name': 'Perfect Clear', 'description': 'Clear the entire board', 'target_value': 200},
+                {'name': 'Line Warrior', 'description': 'Clear 50 lines total', 'target_value': 50},
+                {'name': 'Combo King', 'description': 'Clear 4 lines at once', 'target_value': 4}
+            ]
+            
+            for ach in default_achievements:
+                achievement = Achievement(
+                    name=ach['name'],
+                    description=ach['description'],
+                    target_value=ach['target_value'],
+                    progress=0,
+                    current_value=0
+                )
+                db.session.add(achievement)
+            
+            try:
+                db.session.commit()
+                achievements = Achievement.query.all()
+            except Exception as e:
+                db.session.rollback()
+                print(f"Error creating achievements: {e}")
+                raise
+        
+        return render_template('achievements.html', achievements=achievements)
+    except Exception as e:
+        print(f"Error in achievements route: {e}")
+        return "An error occurred loading achievements", 500
 
+# Recreate the database schema
 with app.app_context():
+    db.drop_all()
     db.create_all()
