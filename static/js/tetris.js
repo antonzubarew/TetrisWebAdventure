@@ -311,7 +311,7 @@ class Tetris {
         if (!this.gameOver && !this.paused) {
             this.draw();
             this.moveCurrentPiece(0, 1);
-            setTimeout(() => this.gameLoop(), 1000 / this.level);
+            setTimeout(() => this.gameLoop(), 500 / (this.level + 1));
         } else if (this.gameOver) {
             this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
