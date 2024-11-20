@@ -46,6 +46,20 @@ class Tetris {
         this.initGame();
     }
 
+    getGhostPosition() {
+        let ghostY = this.currentPiece.y;
+        const originalY = this.currentPiece.y;
+        
+        while (!this.checkCollision()) {
+            ghostY++;
+            this.currentPiece.y = ghostY;
+        }
+        
+        ghostY--;
+        this.currentPiece.y = originalY;
+        return ghostY;
+    }
+
     bindControls() {
         document.addEventListener('keydown', (e) => {
             if (this.gameOver || this.paused) return;
@@ -234,6 +248,24 @@ class Tetris {
             for (let x = 0; x < this.cols; x++) {
                 if (this.board[y][x]) {
                     this.drawBlock(x, y, this.board[y][x]);
+                }
+            }
+        }
+        
+        // Draw ghost piece
+        if (this.currentPiece) {
+            const ghostY = this.getGhostPosition();
+            for (let y = 0; y < this.currentPiece.shape.length; y++) {
+                for (let x = 0; x < this.currentPiece.shape[y].length; x++) {
+                    if (this.currentPiece.shape[y][x]) {
+                        this.ctx.fillStyle = this.currentPiece.color + '40';
+                        this.ctx.fillRect(
+                            (this.currentPiece.x + x) * this.blockSize,
+                            (ghostY + y) * this.blockSize,
+                            this.blockSize - 1,
+                            this.blockSize - 1
+                        );
+                    }
                 }
             }
         }
